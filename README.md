@@ -1,4 +1,6 @@
 #Java Slang Study
+WARNING: Still under development, things could be and will likely be incorrect.
+
 
 This is a study project for the Java Slang Presentation done by Daniel Hinojosa. 
 This repository contains code examples that are compilable and testable.
@@ -50,5 +52,90 @@ a side effect occurring, and every time we run it there is something
 extra happening. Some stringent developers will say that this is 
 essentially "Lying to your users"
 
-
 (1) https://wiki.haskell.org/Referential_transparency
+
+## All Immutable, All The Time, Baby!
+
+One of the things that makes programming so fun is immutability.  There is less
+cognitive load to deal with when dealing with immutability.  If you no
+longer have to query what state a
+certain object or instance is in, neither do your processors have to query 
+as well since they all maintain the same copy.
+
+JavaSlang meets this immutable functional data structures, 
+also known as _purely functional data structures_.
+
+## Purely Functional Data Structures
+
+Now that you know what these purely functional data structures are, lets start with 
+the single linked list
+
+### Single Linked List
+
+A single linked list is an immutable collection just the way it sounds one single item, linked to 
+another via a reference.
+
+#### The Power of `prepend`
+
+In functional programming, the power of an operation lies in prepend, and that is to 
+add one element to the beginning of a `List`. Consider the following diagram.
+
+First let's take a look at the code:
+
+```$javaslang
+List<Integer> original = List.of(1, 2, 3);
+List<Integer> result = singleLinkedList.prepend(0);
+```
+
+Here is what `prepend` actually does in the source code inside of JavaSlang:
+
+```$java
+default List<T> prepend(T element) {
+    //this refers to the List that this method is in
+    return new List.Cons(element, this); 
+}
+```
+That means that the diagram for this operation looks as follows:
+
+```
+original -> [1] -> [2] -> [3]
+             ^
+             |
+result   -> [0]
+```
+
+There really isn't that much copying going on here so therefore the operation.
+Where things get interesting is when we `append` rather than `prepend`. There of course will be cost, 
+but let's take a look at how this is done using the Java Slang API, then take 
+a look at the internals and see how it all works.
+
+First, how it is simply done.
+```$java
+List<Integer> original = List.of(1, 2, 3);
+List<Integer> result = original.append(4);
+```
+What is really going on inside.
+```$java
+default List<T> append(T element) {
+   return (List)this.foldRight(of(element), (x, xs) -> {
+       return xs.prepend(x);
+   });
+}
+```
+
+NOTE: Check
+
+
+`foldRight` means that we start off with the item 
+that we want to add, in our case `4`, and we build atop of that 
+one item linearly until we have our new list, but we are going _right_ so
+in our example we will start with 3 and go right.
+
+```
+Iteration 1:  x = 4 ; xs = []        ; result = [4]
+Iteration 2:  x = 3 ; xs = [4]       ; result = [3, 4]
+Iteration 3:  x = 2 ; xs = [3, 4]    ; result = [2, 3, 4]
+Iteration 4:  x = 1 ; xs = [2, 3, 4] ; result = [1, 2, 3, 4]
+```
+
+## Performance Concerns
