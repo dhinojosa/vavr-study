@@ -123,19 +123,48 @@ default List<T> append(T element) {
 }
 ```
 
-NOTE: Check
-
-
 `foldRight` means that we start off with the item 
 that we want to add, in our case `4`, and we build atop of that 
 one item linearly until we have our new list, but we are going _right_ so
 in our example we will start with 3 and go right.
 
-```
-Iteration 1:  x = 4 ; xs = []        ; result = [4]
-Iteration 2:  x = 3 ; xs = [4]       ; result = [3, 4]
-Iteration 3:  x = 2 ; xs = [3, 4]    ; result = [2, 3, 4]
-Iteration 4:  x = 1 ; xs = [2, 3, 4] ; result = [1, 2, 3, 4]
+```$java
+Iteration 1:  x = 3 ; xs = [4]       ; result = [3, 4]
+Iteration 2:  x = 2 ; xs = [3, 4]    ; result = [2, 3, 4]
+Iteration 3:  x = 1 ; xs = [2, 3, 4] ; result = [1, 2, 3, 4]
 ```
 
+If you really want to look at it as a test, 
+ you can rewrite `append` for very own, only in this example, I am explicitly using `BiFunction` to show our lambda conversion.
+
+```$java
+List<Integer> original = List.of(1, 2, 3);
+List<Integer> foldRight = original.foldRight(List.of(4), new BiFunction<Integer, List<Integer>, List<Integer>>() {
+    @Override
+    public List<Integer> apply(Integer integer, List<Integer> integers) {
+        List<Integer> result = integers.prepend(integer);
+        System.out.format("next: %2d; list: %-13s; result: %s\n", integer, integers, result);
+        return result;
+    }
+});
+```
+
+Now here is how it looks when we convert the `BiFunction` into a lambda.
+
+```$java
+List<Integer> original = List.of(1, 2, 3);
+List<Integer> foldRight = original.foldRight(List.of(4), (integer, integers) -> {
+     List<Integer> result = integers.prepend(integer);
+     System.out.format("next: %2d; list: %-13s; result: %s\n", integer, integers, result);
+});
+```
+           
+Where the results of the operation are, which matches what we thought
+
+```$java
+next:  3; list: List(4)      ; result: List(3, 4)
+next:  2; list: List(3, 4)   ; result: List(2, 3, 4)
+next:  1; list: List(2, 3, 4); result: List(1, 2, 3, 4)
+```
+            
 ## Performance Concerns

@@ -3,6 +3,9 @@ package com.evolutionnext;
 import javaslang.collection.List;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.function.BiFunction;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FunctionalDataStructuresTest {
@@ -25,5 +28,17 @@ public class FunctionalDataStructuresTest {
         List<Integer> original = List.of(1, 2, 3);
         List<Integer> result = original.append(4);
         assertThat(result).isEqualTo(List.of(1,2,3,4));
+    }
+
+    @Test
+    public void testAppendWithFoldRight() {
+        List<Integer> original = List.of(1, 2, 3);
+        List<Integer> foldRight = original.foldRight(List.of(4), (integer, integers) -> {
+            List<Integer> result = integers.prepend(integer);
+            System.out.format("next: %2d; list: %-13s; result: %s\n", integer, integers, result);
+            return result;
+        });
+
+        assertThat(foldRight).isEqualTo(List.of(1,2,3,4));
     }
 }
