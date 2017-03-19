@@ -1,14 +1,12 @@
 package com.evolutionnext;
 
 import javaslang.collection.List;
+import javaslang.collection.Queue;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FunctionalDataStructuresTest {
+public class LinkedListTest {
     @Test
     public void testSingleListCreation() {
         //Careful, this in the package javaslang.collection.List
@@ -41,4 +39,5 @@ public class FunctionalDataStructuresTest {
 
         assertThat(foldRight).isEqualTo(List.of(1,2,3,4));
     }
+
 }

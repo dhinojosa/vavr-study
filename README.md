@@ -166,5 +166,26 @@ next:  3; list: List(4)      ; result: List(3, 4)
 next:  2; list: List(3, 4)   ; result: List(2, 3, 4)
 next:  1; list: List(2, 3, 4); result: List(1, 2, 3, 4)
 ```
+
+## Queue
+
+Queues, what we Americans call "gettin' in line", is just that, a first in, first out semantics. Only this
+time there are immutable and persistent considerations to be aware of. Consider the following code:
+
+```$java
+Queue<Integer> queue = Queue.of(1, 2, 3, 4);
+Queue<Integer> newQueue = queue.enqueue(5,6,7,8);
+```
+Here `queue` contains 1,2,3,4 as expected, then we take `queue` and `enqueue` some further
+numbers 5,6,7,8.  Because of the immutablity of the `queue` it holds onto the same numbers.
+The functional trick in the backend is separation of the elements, because we add items doesn't
+necessarily create a bunch of useless objects
+ 
             
 ## Performance Concerns
+
+
+##TODO
+* Make sure to describe persistent data structures
+* Cover Tuples before queue
+* Cover Pattern Matching due to dequeue having tuples.
