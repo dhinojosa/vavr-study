@@ -5,6 +5,7 @@ import javaslang.collection.List;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,37 +14,27 @@ public class FunctionTest {
     @Test
     public void function0Test() throws Exception {
         //Aka Supplier
-        Function0<LocalDate> function0 = new Function0<LocalDate>() {
-            @Override
-            public LocalDate apply() {
-                return LocalDate.now();
-            }
-        };
-        List<LocalDate> listOfLocalDates = List.fill(10, function0); //Whoa! works! Inherits from Supplier
+        Function0<LocalDate> function0 = LocalDate::now;
+        List<LocalDate> listOfLocalDates = List.fill(10, function0);
+        listOfLocalDates.forEach(System.out::println);
         assertThat(listOfLocalDates).hasSize(10);
     }
 
     @Test
     public void function1Test() throws Exception {
-        List.range(1, 10).map(new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer integer) {
-                return integer * 10;
-            }
-        });
+        List list = List.range(1, 10).map(integer -> integer * 10);
+        assertThat(list.head()).isEqualTo(10);
     }
 
-    @Test
-    public void function1TestFromIntegerToTuple2() throws Exception {
-        List.range(1, 10).map(integer -> Tuple.of(integer, integer.toString() + "Rock")).toMap(Function1.identity());
-    }
 
 
     @Test
     public void curryingTest() throws Exception {
-        Function3<Integer, Integer, Integer, Integer> function3 = (integer, integer2, integer3) -> integer + integer2
+        Function3<Integer, Integer, Integer, Integer> function3 =
+                (integer, integer2, integer3) -> integer + integer2
                 + integer3;
-        Function1<Integer, Function1<Integer, Function1<Integer, Integer>>> curried = function3.curried();
+        Function1<Integer, Function1<Integer, Function1<Integer, Integer>>> curried =
+                function3.curried();
         Function1<Integer, Integer> add7 = curried.apply(3).apply(4);
         assertThat(add7.apply(3)).isEqualTo(10);
     }
@@ -78,12 +69,16 @@ public class FunctionTest {
         long end = System.currentTimeMillis();
         long firstTime = end - start;
 
+        System.out.format("First Time: %d", firstTime);
+
         start = System.currentTimeMillis();
         f2.apply(4);
         end = System.currentTimeMillis();
         long secondTime = end - start;
 
-        assertThat(secondTime).isGreaterThan(firstTime);
+        System.out.format("Second Time: %d", secondTime);
+
+        assertThat(secondTime).isLessThan(firstTime);
     }
 
     @Test
@@ -91,7 +86,6 @@ public class FunctionTest {
         //f(g(i))
         //g(i) = s
         //f(s) = d
-
         Function1<String, Double> f = (String s) -> s.length() * 1.0;
         Function1<Integer, String> g = (Integer i) -> i + "hello";
         Function1<Integer, Double> composedFunction = f.compose(g);

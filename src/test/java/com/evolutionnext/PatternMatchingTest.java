@@ -78,12 +78,6 @@ public class PatternMatchingTest {
     }
 
     @Test
-    public void doYourOwnPatternMatch() throws Exception {
-
-    }
-
-
-    @Test
     public void testFuturePatternMatching() throws Exception {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         Future<Integer> future = Future.of(executorService, () -> {

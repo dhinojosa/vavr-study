@@ -10,12 +10,14 @@ public class EitherTest {
 
     @Test
     public void testEitherPositive() {
-        Either<Throwable, Integer> positiveAnswer = Either.right(10);
+        Either<Throwable, Integer>
+                positiveAnswer = Either.right(10);
     }
 
     @Test
     public void testEitherNegative() {
-        Either<Throwable, Integer> negativeAnswer = Either.left(new IllegalArgumentException("Not liking that."));
+        Either<String, Integer> negativeAnswer =
+                Either.left("I'm hungry");
     }
 
     @Test
@@ -29,6 +31,7 @@ public class EitherTest {
                 )
         );
 
+        System.out.println(eitherInteger);
         Integer result = eitherInteger.getOrElse(-1);
         assertThat(result).isEqualTo(Either.right(20));
     }

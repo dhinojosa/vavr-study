@@ -10,12 +10,7 @@ public class TryTest {
 
     @Test
     public void testTryWithArithmeticException() {
-        Try<Integer> tryOf = Try.of(new Try.CheckedSupplier<Integer>() {
-            @Override
-            public Integer get() throws Throwable {
-                return 12 / 0;
-            }
-        });
+        Try<Integer> tryOf = Try.of(() -> 12 / 0);
         Integer answer = tryOf.getOrElse(-1);
         assertThat(answer).isEqualTo(-1);
     }

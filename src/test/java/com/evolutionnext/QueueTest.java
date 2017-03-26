@@ -23,5 +23,6 @@ public class QueueTest {
         Tuple2<Integer, Queue<Integer>> taken = newQueue.dequeue();
         assertThat(taken._1).isEqualTo(1);
         assertThat(taken._2).isEqualTo(Queue.of(2,3,4,5,6,7,8));
+
     }
 }

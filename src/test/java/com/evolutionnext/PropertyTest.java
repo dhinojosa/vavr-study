@@ -30,12 +30,12 @@ public class PropertyTest {
         Arbitrary<Integer> arbitraryIntegers = Arbitrary.integer();
         Property.def("a + b == b + a")
                 .forAll(arbitraryIntegers, arbitraryIntegers)
-                .suchThat(new CheckedFunction2<Integer, Integer, Boolean>() {
-                    @Override
-                    public Boolean apply(Integer o, Integer o2) throws Throwable {
-                        return o + o2 == o2 + o;
-                    }
-                }).check().assertIsSatisfied();
+                .suchThat((o, o2) -> {
+                    System.out.format("o: %d, o2: %d\n", o, o2);
+                    return o + o2 == o2 + o;
+                 })
+                .check()
+                .assertIsSatisfied();
     }
 
 

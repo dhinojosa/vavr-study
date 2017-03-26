@@ -15,11 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LazyTest {
     @Test
     public void testLazy() throws InterruptedException {
-        Lazy<LocalDateTime> lazyInt = Lazy.of(LocalDateTime::now);
-        System.out.println("At the time of this line evaluation: " + LocalDateTime.now());
+        Lazy<LocalDateTime> lazyLocalDateTime = Lazy.of(LocalDateTime::now);
+
+        System.out.println("At the time of this line evaluation: "
+                + LocalDateTime.now());
         Thread.sleep(1000);
-        System.out.println("What we got from our lazy value: " + lazyInt.get());
-        System.out.println("What we got from our lazy value: " + lazyInt.get()); //memoized
+        System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get());
+        System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get()); //memoized
     }
 
     @Test
@@ -37,7 +39,6 @@ public class LazyTest {
         int divisor = 0;
         Lazy<Integer> lazyInt = Lazy.of(() -> 54/divisor);
         assertTrue(true);
-
         thrown.expect(ArithmeticException.class);
         lazyInt.map(x -> x + 15).forEach(System.out::println);
     }

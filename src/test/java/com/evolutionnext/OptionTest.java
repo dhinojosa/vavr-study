@@ -16,16 +16,5 @@ public class OptionTest {
         assertThat(option1.getOrElse("None")).isEqualTo("None");
         assertThat(option2.getOrElse("None")).isEqualTo("Foo");
     }
-
-    @Test
-    public void testOptionMonadic() {
-        Option<Integer> option1 = Option.of(100);
-        Option<Integer> option2 = Option.of(0);
-
-        Option<Integer> aFor = For(option1, v1 ->
-                                     For(option2).yield(v2 -> v1 + v2)).toOption();
-
-        assertThat(aFor.getOrElse(-1)).isEqualTo(100);
-    }
 }
 
