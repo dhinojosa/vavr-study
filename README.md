@@ -1,6 +1,4 @@
 #Java Slang Study
-WARNING: Still under development, things could be and will likely be incorrect.
-
 
 This is a study project for the Java Slang Presentation done by Daniel Hinojosa. 
 This repository contains code examples that are compilable and testable.
@@ -169,7 +167,7 @@ next:  1; list: List(2, 3, 4); result: List(1, 2, 3, 4)
 
 ## Queue
 
-Queues, what we Americans call "gettin' in line", is just that, a first in, first out semantics. Only this
+Queues, or what we Americans call "gettin' in line", is just that, a first in, first out semantics. Only this
 time there are immutable and persistent considerations to be aware of. Consider the following code:
 
 ```$java
@@ -180,12 +178,213 @@ Here `queue` contains 1,2,3,4 as expected, then we take `queue` and `enqueue` so
 numbers 5,6,7,8.  Because of the immutablity of the `queue` it holds onto the same numbers.
 The functional trick in the backend is separation of the elements, because we add items doesn't
 necessarily create a bunch of useless objects
+
+The way `queue` works internally is that a `front` and `rear` reference is held internal to the
+data structure.  When we enqueue `5,6,7,8` in the above example. `front` will contain `1,2,3,4` and 
+`rear` will refer to `8,7,6,5`.  If we `enqueue` more then it will `prepend` (there it is again) to the
+`rear`.  The magic happens when we construct a `Queue` again, by a process like `dequeue` where the `front` 
+is depleted until empty. When a new `Queue` is created when `dequeue`is called and the `front` is empty 
+while the `rear` is not. The new `Queue` will move the `rear` to the `front` and reverse the content and 
+ leave the `front` empty.
  
             
 ## Performance Concerns
 
+While performance concerns are always valid when immutable collections are concerned, the JavaSlang
+ website contains a table of all O-notation expectations for different behaviors
+  on different collections
 
-##TODO
-* Make sure to describe persistent data structures
-* Cover Tuples before queue
-* Cover Pattern Matching due to dequeue having tuples.
+
+http://www.javaslang.io/javaslang-docs/#_performance_characteristics
+
+
+## Options
+
+`Option` has been in the JDK for a while now in the form of `java.util.Optional<T>` and
+while somewhat useful there is one important aspect about `Optional` and that is that it
+isn't serializable.  That in turn also means that it is not meant to be used as member 
+ variables.  Java Slang's `Option` is serializable, and there was a time where there was some 
+ contemplation of removing it.
+ 
+ Here is a simple example of what is available with JavaSlang's variety of `Option`.
+ 
+```$java
+Option<String> option1 = Option.none();
+Option<String> option2 = Option.of("Foo");
+
+option1.getOrElse("Nope, Sorry");  //Nope, Sorry
+option2.getOrElse("Nope, Sorry");  //Foo
+```
+
+## Tuples
+If you, our dearly beloved reader has never ventured past the lush lawns of Java,
+ you may have not seen tuples. Tuple are immutable container for disparate objects. If you 
+ ever wondered how you can return two items from a method, that would be a `Tuple`. In JavaSlang,
+ there is `Tuple1`, `Tuple2`, `Tuple3`, `Tuple4`, `Tuple5`,  all the way to `Tuple8`. 
+  
+```$java
+Tuple2<String, Integer> tuple2 = new Tuple2<>("Foo", 4);
+tuple2._1()  // Foo
+tuple2._2()  // 4
+```
+
+From the last example, if you might be wondering where did that `_1` and `_2` come from? 
+Being that JavaSlang is inspired from Scala and Scala ultimately being inspired from Haskell,
+this where the notion of first and second come into play.  Where are tuples used? Let's take a look 
+at an immutable map.
+
+```$java
+Map<Integer, String> nums = HashMap.of(
+                Tuple.of(1, "One"), 
+                Tuple.of(2, "Two"), 
+                Tuple.of(3, "Three"));
+nums.get(1).getOrElse("Unknown");  //One
+nums.get(10).getOrElse("Unknown"); //Unknown
+```
+
+#Functions
+
+Functions are verbs.  They invoke a behavior and in Java 8 in
+order to create a function, you need an `interface` with one 
+`abstract` method.
+Let's pick on `java.util.BiFunction` in JDK 8.
+
+```$java
+@FunctionalInterface
+public interface BiFunction<T, U, R> {
+    R apply(T t, U u);
+}
+```
+
+Just because `BiFunction` has `@FunctionalInterface` doesn't make it a function. 
+That is purely a call to the compiler to help us ensure that this indeed
+is an `interface` with one `abstract` method.
+
+Let's take a look though at what the JavaSlang alternative for `BiFunction` looks like.
+
+```$java
+@FunctionalInterface
+public interface Function2<T1, T2, R> extends λ<R>, BiFunction<T1, T2, R>  {
+  R apply(T1 t1, T2 t2);
+}
+```
+
+Interesting find. `Function2` derives from `java.util.BiFunction`. Great! 
+So anywhere something accepts a `BiFunction` you can fit a nice `Function2`.  It also extends 
+from `λ` and you know what that means, so let's move on.  I am just kidding you don't 
+know what `λ` does, what the hell is that thing? `λ` is a super interface!  The super `interface`
+merely dictates that is you want to roll with `λ` gang, 
+you need to be able to turn into a `curried` function, back to an uncurried function
+called `tupled`, and you should be able to `memoize` a function which is to cache a set of
+inputs. All part of the plan.
+
+Before we begin to see all the goodness of a `Fuction` just note that just like `Tuple`, 
+function come in these wide array of flavors, `Function1`, `Function2`, `Function3`, `Function4`, 
+all the way to `Function8`. Now spring into action with JavaSlang's functions.
+
+```java
+Function0<LocalDate> function0 = new Function0<LocalDate>() {
+    @Override
+    public LocalDate apply() {
+        return LocalDate.now();
+    }
+};
+List<LocalDate> listOfLocalDates = List.fill(10, function0);
+listOfLocalDates.forEach(new Consumer<LocalDate>() {
+    @Override
+    public void accept(LocalDate x) {
+        System.out.println(x);
+    }
+});
+```
+So in the last example, I went mighty explicit with declaring what `Function0` is and `java.util.Consumer`.
+Taking that all away, we are left with the following sweet treat.
+
+```java
+Function0<LocalDate> function0 = LocalDate::now;
+List<LocalDate> listOfLocalDates = List.fill(10, function0);
+listOfLocalDates.forEach(System.out::println);
+```
+
+Running the above lists 10 dates using `List.fill` a method on JavaSlang's `List`. Pretty nifty.
+
+## Pattern Matching
+
+Pattern Matching is just one of the features that I sorely miss with Java.  
+The idea of Pattern Matching is more than just a switch statement which has it's problems.
+
+```java
+String str = "January";
+int month;
+switch (str) {
+    case "January":
+        month = 1;
+        break;
+    case "February":
+        month = 2;
+        break;
+    case "March":
+        month = 3;
+        break;
+    default:
+        month = 4;
+        break;
+}
+```
+
+The above example, has a bunch of `break`s and that's pretty noisy. 
+The other code smell is `int month` outside the block.  That
+mean there is mutability right above the `switch` and that
+is not cool.  We are favoring immutability, and it would be 
+great to set `month` to the `switch` directly. The other 
+problem is we are limited to what we can feed a `switch`; 
+`String`, primitives, primitive wrappers, and `enum`. Weak sauce.
+It would be great if we can bust the doors wide open and allow
+more members and not only that if we can break down the 
+contents to match what is inside these objects.  That's what 
+pattern matching brings and is a _very_ powerful concept.
+
+Using the last example, let us rewrite it, cleaner, with pattern matching.
+
+```java
+Integer month = Match("January").of(
+   Case(is("January"), 1),
+   Case(is("February"), 2),
+   Case(is("March"), 3),
+   Case(is("April"), 4),
+   Case($(), 5));
+```
+
+Oh, damn, that looks great. Here we want to match `January`
+and return the ordinal number matching the month.  That's Java!  
+No, I am serious that's Java!  But wait, careful 
+analysis by you, our dear reader notices `$()` and
+you can probably piece together that 
+this is some sort of default. That is true.  These
+are called Atomic Patterns and yes it is a way to describe 
+something that is either a "catch all", a default, 
+or a predicate.
+
+Here is an example where we are using it to dig into objects to find out what inside and
+match on those items
+
+```java
+Option<String> middleName = Option.of("Lisa");
+String message = Match(middleName).of(
+     Case(Some($()), x -> "Middle name is " + x),
+     Case(None(), "No middle name here"));
+```
+
+With this pattern match. I know there is an Option and it either
+in type `Some` meaning it has something or `None`.  We can burrow
+down and use `$()` to signify that we wish to match with
+whatever is in the `Some`, you see after that, that we
+have a function so we can actually match on the middle name.
+
+## Conclusion
+There is way much more goodness with JavaSlang.  Check out the 
+project, or attend one of my sessions where we can discover 
+some more of the exciting aspects of JavaSlang.  Once you delight
+in some of these new features you'll either want to skip over
+to another functional language like Scala or Clojure or you'll 
+just want to demand more out of Java.  
