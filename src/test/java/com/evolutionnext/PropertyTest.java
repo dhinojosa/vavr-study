@@ -1,6 +1,5 @@
 package com.evolutionnext;
 
-import javaslang.CheckedFunction1;
 import javaslang.CheckedFunction2;
 import javaslang.CheckedFunction3;
 import javaslang.test.Arbitrary;
@@ -11,19 +10,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 
 public class PropertyTest {
-
-    // Source : http://deron.meranda.us/data/popular-both-first.txt
-    // Source : http://deron.meranda.us/data/popular-last.txt
-
-    @Before
-    public void setUp() throws IOException {
-        URL url = new URL("http://deron.meranda.us/data/popular-both-first.txt");
-        url.openConnection();
-    }
-
 
     @Test
     public void testSimplePropertyOfIntegersCommutative() throws Exception {
@@ -68,8 +56,4 @@ public class PropertyTest {
                     }
                 }).check().assertIsSatisfied();
     }
-
-
-    //tell venkat about sandwich
-    //.sout
 }

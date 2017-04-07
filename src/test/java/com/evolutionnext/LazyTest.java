@@ -1,6 +1,5 @@
 package com.evolutionnext;
 
-import javafx.util.converter.LocalDateStringConverter;
 import javaslang.Lazy;
 import javaslang.collection.List;
 import org.junit.Rule;
@@ -9,7 +8,6 @@ import org.junit.rules.ExpectedException;
 
 import java.time.LocalDateTime;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LazyTest {
@@ -17,8 +15,8 @@ public class LazyTest {
     public void testLazy() throws InterruptedException {
         Lazy<LocalDateTime> lazyLocalDateTime = Lazy.of(LocalDateTime::now);
 
-        System.out.println("At the time of this line evaluation: "
-                + LocalDateTime.now());
+        System.out.println("At the time of this line evaluation: " + LocalDateTime.now());
+
         Thread.sleep(1000);
         System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get());
         System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get()); //memoized
@@ -29,6 +27,7 @@ public class LazyTest {
         Lazy<Integer> lazyInt = Lazy.of(LocalDateTime::now).map(LocalDateTime::getMinute);
         assertThat(lazyInt.isEvaluated()).isFalse();
         lazyInt.out(System.out);
+        assertThat(lazyInt.isEvaluated()).isTrue();
     }
 
     @Rule
@@ -38,15 +37,15 @@ public class LazyTest {
     public void testLazyDanger() {
         int divisor = 0;
         Lazy<Integer> lazyInt = Lazy.of(() -> 54/divisor);
-        assertTrue(true);
         thrown.expect(ArithmeticException.class);
-        lazyInt.map(x -> x + 15).forEach(System.out::println);
+        Lazy<Integer> integerLazy = lazyInt.map(x -> x + 15);
+        integerLazy.forEach(System.out::println);
     }
 
     @Test
     public void testLazyToList() {
         Lazy<Integer> lazyInt = Lazy.of(() -> 4);
         List<Integer> integers = lazyInt.toList();
-        assertThat(integers).hasSize(1);
+        assertThat(integers).hasSize(1).containsOnly(4);
     }
 }

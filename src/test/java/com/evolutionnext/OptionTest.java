@@ -16,5 +16,11 @@ public class OptionTest {
         assertThat(option1.getOrElse("None")).isEqualTo("None");
         assertThat(option2.getOrElse("None")).isEqualTo("Foo");
     }
+
+    @Test
+    public void testOptionMap() throws Exception {
+        Option<Integer> option2 = Option.of("Foo").map(x -> x.length());
+        assertThat(option2.getOrElse(-1)).isEqualTo(3);
+    }
 }
 

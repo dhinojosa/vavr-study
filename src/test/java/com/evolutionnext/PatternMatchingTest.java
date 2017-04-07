@@ -18,8 +18,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class PatternMatchingTest {
 
     /*
-     *  A switch works with the byte, short, char, and int primitive data types. It also works with enumerated types
-     *  (discussed in Enum Types), the String class, and a few special classes that wrap certain primitive types:
+     *  A switch works with the byte, short, char, and int primitive data types.
+     *  It also works with enumerated types
+     *  (discussed in Enum Types), the String class,
+     *  and a few special classes that wrap certain primitive types:
      *  Character, Byte, Short, and Integer
      */
     @Test
@@ -58,7 +60,7 @@ public class PatternMatchingTest {
     public void testPatternMatchOption() throws Exception {
         Option<String> middleName = Option.of("Lisa");
         String message = Match(middleName).of(
-                Case(Some($()),x -> "Middle name is " + x),
+                Case(Some($()), x -> "Middle name is " + x),
                 Case(None(), "No middle name here"));
         assertThat(message).isEqualTo("Middle name is Lisa");
     }
@@ -68,12 +70,10 @@ public class PatternMatchingTest {
         Try<Tuple2<Integer, String>> tryT2 = Try.of(() -> {
             throw new RuntimeException("Oops");
         });
-
         String message = Match(tryT2).of(
                 Case(Success($()), x -> "Got an answer and it was: " + x),
                 Case(Failure($()), x -> "Oh no we got: " + x.getMessage())
         );
-
         assertThat(message).isEqualTo("Oh no we got: Oops");
     }
 
@@ -90,7 +90,7 @@ public class PatternMatchingTest {
                         Case(Success($(instanceOf(Integer.class))), integer -> run(() -> System.out.println(integer))),
                         Case(Failure($()), error -> run(error::printStackTrace))
                 ));
-        Thread.sleep(10000);
+        Thread.sleep(6000);
     }
 
 }

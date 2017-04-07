@@ -78,6 +78,8 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+
 ### Vim template
 # swap
 [._]*.s[a-w][a-z]
@@ -89,6 +91,7 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
 ### Emacs template
 # -*- mode: gitignore; -*-
 \#*\#
@@ -134,6 +137,8 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
+
+
 ### Maven template
 target/
 pom.xml.tag

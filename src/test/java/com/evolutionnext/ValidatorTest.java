@@ -24,6 +24,7 @@ public class ValidatorTest {
         Validation<List<String>, Employee> employeeValidation =
                 validator.validatePerson("N8", "Schutta", -2);
         assertThat(employeeValidation.isValid()).isEqualTo(false);
+
         Validation<String, Employee> employees = employeeValidation
                 .leftMap(strings -> strings.reduceLeft((total, next) -> total + ", " + next));
         System.out.println(employees.getError());
