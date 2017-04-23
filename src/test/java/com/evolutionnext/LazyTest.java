@@ -24,7 +24,8 @@ public class LazyTest {
 
     @Test
     public void testMonadicLazyStructures() {
-        Lazy<Integer> lazyInt = Lazy.of(LocalDateTime::now).map(LocalDateTime::getMinute);
+        Lazy<Integer> lazyInt = Lazy.of(LocalDateTime::now)
+                                     .map(LocalDateTime::getMinute);
         assertThat(lazyInt.isEvaluated()).isFalse();
         lazyInt.out(System.out);
         assertThat(lazyInt.isEvaluated()).isTrue();

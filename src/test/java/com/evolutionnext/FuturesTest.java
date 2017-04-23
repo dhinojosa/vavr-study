@@ -32,7 +32,7 @@ public class FuturesTest {
                 System.out.println("Future priority: " +
                         Thread.currentThread()
                               .getPriority());
-                Thread.sleep(10000);
+                Thread.sleep(5000);
                 return 5 + 3;
             }
         };
@@ -90,7 +90,7 @@ public class FuturesTest {
                     return 50 + 10;
                 });
 
-        assertThat(future.get()).isEqualTo(60);
+        assertThat(future.map(x -> x + 100).get()).isEqualTo(160);
     }
 
     @Test
@@ -101,8 +101,6 @@ public class FuturesTest {
                     Thread.sleep(5000);
                     return 50 + 10;
                 });
-
-        assertThat(future.get()).isEqualTo(60);
         future.onSuccess(x -> assertThat(x).isEqualTo(60));
         future.onFailure(t -> fail(t.getMessage()));
         Thread.sleep(6000);

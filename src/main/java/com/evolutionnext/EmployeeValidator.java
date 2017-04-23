@@ -8,7 +8,9 @@ public class EmployeeValidator {
     public Validation<List<String>, Employee> validatePerson(
             String firstName,String lastName, int age) {
         return Validation.combine(
-                validateName(firstName), validateName(lastName), validateAge(age)).ap(Employee::new);
+                validateName(firstName),
+                validateName(lastName),
+                validateAge(age)).ap(Employee::new);
     }
 
     private Validation<String, String> validateName(String name) {

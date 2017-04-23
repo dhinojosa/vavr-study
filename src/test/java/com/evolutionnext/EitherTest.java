@@ -17,12 +17,12 @@ public class EitherTest {
 
     @Test
     public void testEitherNegative() {
-        Either<String, Integer> negativeAnswer =
-                Either.left("I'm hungry");
+        Either<String, Integer> negativeAnswer = Either.left("I'm hungry");
         assertThat(negativeAnswer.isLeft());
         assertThat(negativeAnswer.getOrElse(-4)).isEqualTo(-4);
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void testMonadicPositiveEither() {
         Either<Throwable, Integer> positiveAnswer = Either.right(10);

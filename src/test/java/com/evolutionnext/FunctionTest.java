@@ -5,8 +5,6 @@ import javaslang.collection.List;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,12 +22,7 @@ public class FunctionTest {
     @Test
     public void function1Test() throws Exception {
         //I can replace Function 1 with java.util.Function
-        List list = List.range(1, 10).map(new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer integer) {
-                return integer * 10;
-            }
-        });
+        List list = List.range(1, 10).map(integer -> integer * 10);
         assertThat(list.head()).isEqualTo(10);
     }
 
