@@ -10,7 +10,8 @@ public class SortedSetTest {
 
     @Test
     public void testSortedSet() throws Exception {
-        SortedSet<String> sortedSet = TreeSet.of("foo", "bar", "baz", "qux", "quux", "quuz");
+        SortedSet<String> sortedSet =
+                TreeSet.of("foo", "bar", "baz", "qux", "quux", "quuz");
         SortedSet<String> newSortedSet = sortedSet.add("bam");
         assertThat(newSortedSet.size()).isEqualTo(7);
         assertThat(newSortedSet.contains("bam")).isEqualTo(true);

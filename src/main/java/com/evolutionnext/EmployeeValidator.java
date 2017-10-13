@@ -5,12 +5,12 @@ import javaslang.control.Validation;
 
 public class EmployeeValidator {
 
-    public Validation<List<String>, Employee> validatePerson(
+    public Validation<List<String>, EmployeeWithVavr> validatePerson(
             String firstName,String lastName, int age) {
         return Validation.combine(
                 validateName(firstName),
                 validateName(lastName),
-                validateAge(age)).ap(Employee::new);
+                validateAge(age)).ap(EmployeeWithVavr::new);
     }
 
     private Validation<String, String> validateName(String name) {

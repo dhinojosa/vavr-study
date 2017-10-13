@@ -18,7 +18,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class PatternMatchingTest {
 
     /*
-     *  A switch works with the byte, short, char, and int primitive data types.
+     *  A switch works with the byte, short, char, and
+     *  int primitive data types.
      *  It also works with enumerated types
      *  (discussed in Enum Types), the String class,
      *  and a few special classes that wrap certain primitive types:
@@ -47,13 +48,14 @@ public class PatternMatchingTest {
 
     @Test
     public void testSimplePatternMatch() throws Exception {
-        Integer month = Match("January").of(
+        String month = "January";
+        Integer result = Match(month).of(
                 Case(is("January"), 1),
                 Case(is("February"), 2),
                 Case(is("March"), 3),
                 Case(is("April"), 4),
                 Case($(), 5));
-        assertThat(month).isEqualTo(1);
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -88,6 +90,7 @@ public class PatternMatchingTest {
         future.onComplete(response ->
                 Match(response).of(
                         Case(Success($(instanceOf(Integer.class))), integer -> run(() -> System.out.println(integer))),
+                        //TODO: Case(Success($())), integer -> run)
                         Case(Failure($()), error -> run(error::printStackTrace))
                 ));
         Thread.sleep(6000);

@@ -13,10 +13,13 @@ public class ForComprehensionTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testEitherBefore() {
-        Either<Throwable, Integer> positiveAnswer = Either.right(10);
-        Either<Throwable, Integer> positiveAnswer2 = Either.right(10);
+        Either<Throwable, Integer> positiveAnswer =
+                Either.right(10);
+        Either<Throwable, Integer> positiveAnswer2 =
+                Either.right(10);
 
-        Either<Throwable, Integer> eitherInteger = positiveAnswer.flatMap(x ->
+        Either<Throwable, Integer> eitherInteger =
+                positiveAnswer.flatMap(x ->
                 positiveAnswer2.map(y ->
                         x + y
                 )
@@ -30,13 +33,16 @@ public class ForComprehensionTest {
 
     @Test
     public void testForComprehensionEitherAfter() {
-        Either<Throwable, Integer> positiveAnswer = Either.right(10);
-        Either<Throwable, Integer> positiveAnswer2 = Either.right(10);
+        Either<Throwable, Integer> positiveAnswer =
+                Either.right(10);
+        Either<Throwable, Integer> positiveAnswer2 =
+                Either.right(10);
 
         Either<String, Integer> result =
                 For(positiveAnswer, x ->
                         For(positiveAnswer2)
-                                .yield(y -> x + y)).toRight("Nope");
+                                .yield(y -> x + y))
+                        .toRight("Nope");
 
         assertThat(result).isEqualTo(Either.right(20));
     }
@@ -45,7 +51,9 @@ public class ForComprehensionTest {
     public void testOptionBefore() throws Exception {
         Option<Integer> option1 = Option.of(4);
         Option<Integer> option2 = Option.none();
-        Option<Integer> result = option1.flatMap(x -> option2.map(y -> (x + y)));
+        Option<Integer> result = option1
+                .flatMap(x -> option2
+                        .map(y -> (x + y)));
         assertThat(result).isEqualTo(Option.none());
     }
 
@@ -56,7 +64,9 @@ public class ForComprehensionTest {
 
         Option<Integer> result =
                 For(option1, o1 ->
-                        For(option2).yield(o2 -> o1 + o2)).toOption();
+                        For(option2)
+                                .yield(o2 -> o1 + o2))
+                                .toOption();
         assertThat(result).isEqualTo(Option.none());
     }
 

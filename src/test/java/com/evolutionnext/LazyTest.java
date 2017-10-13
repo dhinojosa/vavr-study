@@ -13,13 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LazyTest {
     @Test
     public void testLazy() throws InterruptedException {
-        Lazy<LocalDateTime> lazyLocalDateTime = Lazy.of(LocalDateTime::now);
+        Lazy<LocalDateTime> lazyLocalDateTime =
+                Lazy.of(() -> LocalDateTime.now());
 
-        System.out.println("At the time of this line evaluation: " + LocalDateTime.now());
+        System.out.println("At the time of this line evaluation: "
+                + LocalDateTime.now());
 
         Thread.sleep(1000);
-        System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get());
-        System.out.println("What we got from our lazy value: " + lazyLocalDateTime.get()); //memoized
+
+        System.out.println("What we got from our lazy value: "
+                + lazyLocalDateTime.get());
+
+        Thread.sleep(1000);
+
+        System.out.println("What we got from our lazy value: "
+                + lazyLocalDateTime.get()); //memoized
+
+        Thread.sleep(1000);
     }
 
     @Test
@@ -35,11 +45,15 @@ public class LazyTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testLazyDanger() {
+    public void testLazyDanger() throws InterruptedException {
         int divisor = 0;
-        Lazy<Integer> lazyInt = Lazy.of(() -> 54/divisor);
-        thrown.expect(ArithmeticException.class);
+        Lazy<Integer> lazyInt = Lazy.of(() -> 54 / divisor);
+        //thrown.expect(ArithmeticException.class);
         Lazy<Integer> integerLazy = lazyInt.map(x -> x + 15);
+
+        System.out.println("So far so good");
+        Thread.sleep(1000);
+
         integerLazy.forEach(System.out::println);
     }
 

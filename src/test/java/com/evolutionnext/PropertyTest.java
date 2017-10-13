@@ -22,13 +22,13 @@ public class PropertyTest {
                 .assertIsSatisfied();
     }
 
-
     @Test
     public void testSimplePropertyOfIntegersNonCommutative() throws Exception {
         Arbitrary<Integer> arbitraryIntegers = Arbitrary.integer();
         Property.def("a - b == b - a")
                 .forAll(arbitraryIntegers, arbitraryIntegers)
-                .suchThat((CheckedFunction2<Integer, Integer, Boolean>) (o, o2) -> o - o2 == o2 - o).check().assertIsSatisfied();
+                .suchThat((CheckedFunction2<Integer, Integer, Boolean>)
+                        (o, o2) -> o - o2 == o2 - o).check().assertIsSatisfied();
     }
 
     @Test
@@ -37,11 +37,11 @@ public class PropertyTest {
         Gen<Character> capAToZ = Gen.choose((char)65, (char)90);
         Arbitrary<Integer> integers = Arbitrary.integer();
         Arbitrary<String> alphaStrings = Arbitrary.string(Gen.oneOf(minAToZ, capAToZ));
-        Property.def("Employee(firstName, lastName).fullName() == firstName + ' ' + lastName")
+        Property.def("EmployeeWithVavr(firstName, lastName).fullName() == firstName + ' ' + lastName")
                 .forAll(alphaStrings, alphaStrings, integers)
                 .suchThat((CheckedFunction3<String, String, Integer, Boolean>) (s, s2, i) -> {
-                    Employee employee = new Employee(s, s2, i);
-                    return employee.getFullName().equals(s + " " + s2);
+                    EmployeeWithVavr employeeWithVavr = new EmployeeWithVavr(s, s2, i);
+                    return employeeWithVavr.getFullName().equals(s + " " + s2);
                 }).check().assertIsSatisfied();
     }
 }
