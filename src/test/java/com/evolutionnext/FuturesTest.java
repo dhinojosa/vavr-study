@@ -1,7 +1,6 @@
 package com.evolutionnext;
 
 import javaslang.concurrent.Future;
-import javaslang.control.Try;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -9,10 +8,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static javaslang.API.*;
-import static javaslang.Patterns.Failure;
-import static javaslang.Patterns.Success;
-import static javaslang.Predicates.instanceOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
@@ -29,9 +24,6 @@ public class FuturesTest {
             public Integer call() throws Exception {
                 System.out.println("Inside ze future: " +
                         Thread.currentThread().getName());
-                System.out.println("Future priority: " +
-                        Thread.currentThread()
-                              .getPriority());
                 Thread.sleep(5000);
                 return 5 + 3;
             }
@@ -39,10 +31,9 @@ public class FuturesTest {
 
         System.out.println("In test:" +
                 Thread.currentThread().getName());
-        System.out.println("Main priority" +
-                Thread.currentThread().getPriority());
-        java.util.concurrent.Future<Integer> future = fixedThreadPool
-                .submit(callable);
+        java.util.concurrent.Future<Integer> future =
+                fixedThreadPool
+                        .submit(callable);
 
         //This will block
         Integer result = future.get(); //block
@@ -62,7 +53,7 @@ public class FuturesTest {
         Callable<Integer> callable = new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                Thread.sleep(10000);
+                Thread.sleep(4000);
                 return 5 + 3;
             }
         };
@@ -83,7 +74,8 @@ public class FuturesTest {
 
     @Test
     public void testFuture() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService =
+                Executors.newFixedThreadPool(4);
         Future<Integer> future = Future.of(executorService,
                 () -> {
                     Thread.sleep(5000);
@@ -98,11 +90,18 @@ public class FuturesTest {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         Future<Integer> future = Future.of(executorService,
                 () -> {
+                    System.out.println(Thread.currentThread().getName());
                     Thread.sleep(5000);
                     return 50 + 10;
                 });
-        future.onSuccess(x -> assertThat(x).isEqualTo(60));
-        future.onFailure(t -> fail(t.getMessage()));
+        future.onSuccess(x -> {
+            System.out.println(Thread.currentThread().getName());
+            assertThat(x).isEqualTo(60);
+        });
+        future.onFailure(t -> {
+            System.out.println(Thread.currentThread().getName());
+            fail(t.getMessage());
+        });
         Thread.sleep(6000);
     }
 }
