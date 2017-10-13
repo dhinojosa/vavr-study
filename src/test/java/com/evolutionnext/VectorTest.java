@@ -1,6 +1,5 @@
 package com.evolutionnext;
 
-import javaslang.Function1;
 import javaslang.collection.Vector;
 import org.junit.Test;
 
