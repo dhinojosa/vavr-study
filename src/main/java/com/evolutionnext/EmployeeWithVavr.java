@@ -6,11 +6,12 @@ import java.util.Objects;
 
 public class EmployeeWithVavr {
     private String firstName;
-    private Option<String> middleName;
+    private Option<String> middleName; //YAY!
     private String lastName;
     private int age;
 
-    public EmployeeWithVavr(String firstName, String lastName, int age) {
+    public EmployeeWithVavr(String firstName,
+                            String lastName, int age) {
         System.out.format("firstName: %s, lastName: %s, age: %d", firstName, lastName, age);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,7 +19,9 @@ public class EmployeeWithVavr {
         this.age = age;
     }
 
-    public EmployeeWithVavr(String firstName, String middleName, String lastName, int age) {
+    public EmployeeWithVavr(String firstName,
+                            String middleName, String lastName,
+                            int age) {
         System.out.format("firstName: %s, lastName: %s, age: %d", firstName, lastName, age);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,6 +70,7 @@ public class EmployeeWithVavr {
     }
 
     public String getFullName() {
-        return firstName + " " + middleName.map(x -> x + " ").getOrElse("")  + lastName;
+        return firstName + " " +
+                middleName.map(x -> x + " ").getOrElse("")  + lastName;
     }
 }

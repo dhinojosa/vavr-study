@@ -13,8 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LazyTest {
     @Test
     public void testLazy() throws InterruptedException {
+
         Lazy<LocalDateTime> lazyLocalDateTime =
-                Lazy.of(() -> LocalDateTime.now());
+                Lazy.of(LocalDateTime::now);
 
         System.out.println("At the time of this line evaluation: "
                 + LocalDateTime.now());
@@ -44,6 +45,7 @@ public class LazyTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testLazyDanger() throws InterruptedException {
         int divisor = 0;

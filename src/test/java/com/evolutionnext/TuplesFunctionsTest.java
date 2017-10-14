@@ -5,8 +5,6 @@ import javaslang.Tuple2;
 import javaslang.collection.List;
 import org.junit.Test;
 
-import java.util.function.BiFunction;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TuplesFunctionsTest {

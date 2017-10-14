@@ -34,10 +34,10 @@ public class EitherTest {
 
         Either<Throwable, Integer> eitherInteger =
                 positiveAnswer.flatMap(x ->
-                   positiveAnswer2.map(y ->
-                        x + y
-                )
-        );
+                        positiveAnswer2.map(y ->
+                                x + y
+                        )
+                );
 
         System.out.println(eitherInteger);
         Integer result = eitherInteger.getOrElse(-1);
@@ -47,7 +47,8 @@ public class EitherTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testMonadicNegativeEither() {
-        Either<Throwable, Integer> positiveAnswer = Either.right(10);
+        Either<Throwable, Integer> positiveAnswer =
+                Either.right(10);
         Either<Throwable, Integer> negativeAnswer =
                 Either.left(new Throwable("Nope"));
 

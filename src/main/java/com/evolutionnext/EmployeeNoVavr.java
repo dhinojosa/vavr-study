@@ -11,7 +11,8 @@ public class EmployeeNoVavr {
     private String lastName;
     private int age;
 
-    public EmployeeNoVavr(String firstName, String lastName, int age) {
+    public EmployeeNoVavr(String firstName,
+                          String lastName, int age) {
         System.out.format("firstName: %s, lastName: %s, age: %d", firstName, lastName, age);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,6 +69,7 @@ public class EmployeeNoVavr {
     }
 
     public String getFullName() {
-        return firstName + " " + getMiddleName().map(x -> x + " ").orElse("")  + lastName;
+        return firstName + " " +
+                getMiddleName().map(x -> x + " ").orElse("")  + lastName;
     }
 }

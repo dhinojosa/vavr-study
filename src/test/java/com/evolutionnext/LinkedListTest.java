@@ -18,6 +18,7 @@ public class LinkedListTest {
     public void testPrepend() {
         List<Integer> singleLinkedList = List.of(1, 2, 3);
         List<Integer> result = singleLinkedList.prepend(0);
+        assertThat(singleLinkedList).isEqualTo(List.of(1,2,3));
         assertThat(result).isEqualTo(List.of(0,1,2,3));
     }
 

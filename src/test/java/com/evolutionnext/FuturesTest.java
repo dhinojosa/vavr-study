@@ -58,7 +58,8 @@ public class FuturesTest {
             }
         };
 
-        java.util.concurrent.Future<Integer> future = executorService
+        java.util.concurrent.Future<Integer> future =
+                executorService
                 .submit(callable);
 
         //This will not block
@@ -82,12 +83,14 @@ public class FuturesTest {
                     return 50 + 10;
                 });
 
-        assertThat(future.map(x -> x + 100).get()).isEqualTo(160);
+        assertThat(future.map(x -> x + 100).get())
+                .isEqualTo(160);
     }
 
     @Test
     public void testFutureSuccessFailureAsync() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors
+                .newFixedThreadPool(4);
         Future<Integer> future = Future.of(executorService,
                 () -> {
                     System.out.println(Thread.currentThread().getName());
@@ -102,6 +105,11 @@ public class FuturesTest {
             System.out.println(Thread.currentThread().getName());
             fail(t.getMessage());
         });
+
+        System.out.println("Well, hello there, Seattle");
+
+
+
         Thread.sleep(6000);
     }
 }

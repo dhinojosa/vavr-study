@@ -57,16 +57,20 @@ public class FunctionTest {
 
     @Test
     public void testTupledOfAFunction3() throws Exception {
-        Function3<Integer, Integer, Integer, String> func3 = (x,y,z) ->
+        Function3<Integer, Integer, Integer, String> func3 =
+                (x,y,z) ->
                 x + y + z + "";
-        Function1<Tuple3<Integer, Integer, Integer>, String> tupled1 = func3.tupled();
-        String result = tupled1.apply(new Tuple3<>(4, 10, 19));
+        Function1<Tuple3<Integer, Integer, Integer>, String>
+                tupled1 = func3.tupled();
+        String result = tupled1.apply(
+                new Tuple3<>(4, 10, 19));
         assertThat(result).isEqualTo("33");
     }
 
     @SuppressWarnings("Duplicates")
     @Test
-    public void testMemoizationOfAFunction() throws Exception {
+    public void testMemoizationOfAFunction()
+            throws Exception {
         //In computing, memoization or memoisation is an optimization technique used primarily to speed up computer
         // programs by storing the results of expensive function calls and returning the cached result when the same
         // inputs occur again.
@@ -99,9 +103,12 @@ public class FunctionTest {
 
     @Test
     public void functionComposition() throws Exception {
-        //f(g(i))
-        //g(i) = s
-        //f(s) = d
+        //From grade school we had the folling: f(g(x))
+        //
+        //What does it mean?
+        //    f(g(i))
+        //    g(i) = s
+        //    f(s) = d
         Function1<String, Double> f =
                 (String s) -> s.length() * 1.0;
         Function1<Integer, String> g =

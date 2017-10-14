@@ -30,7 +30,8 @@ public class OptionTest {
 
     @Test
     public void testOptionMap() throws Exception {
-        Option<Integer> option2 = Option.of("Foo").map(String::length);
+        Option<Integer> option2 = Option.of("Foo")
+                                        .map(String::length);
         assertThat(option2.getOrElse(-1)).isEqualTo(3);
     }
 }
