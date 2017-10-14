@@ -1,8 +1,9 @@
 package com.evolutionnext;
 
-import javaslang.Function1;
-import javaslang.concurrent.Future;
-import javaslang.control.Try;
+
+import io.vavr.Function1;
+import io.vavr.concurrent.Future;
+import io.vavr.control.Try;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

@@ -1,11 +1,9 @@
 package com.evolutionnext;
 
-import javaslang.control.Option;
+
+import io.vavr.control.Option;
 import org.junit.Test;
 
-import java.util.Optional;
-
-import static javaslang.API.For;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OptionTest {

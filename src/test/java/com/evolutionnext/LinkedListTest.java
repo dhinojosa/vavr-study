@@ -1,7 +1,7 @@
 package com.evolutionnext;
 
-import javaslang.collection.List;
-import javaslang.collection.Queue;
+
+import io.vavr.collection.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

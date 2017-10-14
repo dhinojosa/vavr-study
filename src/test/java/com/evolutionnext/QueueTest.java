@@ -1,7 +1,8 @@
 package com.evolutionnext;
 
-import javaslang.Tuple2;
-import javaslang.collection.Queue;
+
+import io.vavr.Tuple2;
+import io.vavr.collection.Queue;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

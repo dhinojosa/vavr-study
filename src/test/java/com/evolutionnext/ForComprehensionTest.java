@@ -1,11 +1,13 @@
 package com.evolutionnext;
 
-import javaslang.control.Either;
-import javaslang.control.Option;
-import javaslang.control.Try;
+
+import io.vavr.control.Either;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.junit.Test;
 
-import static javaslang.API.For;
+
+import static io.vavr.API.For;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForComprehensionTest {

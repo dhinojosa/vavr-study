@@ -1,11 +1,10 @@
 package com.evolutionnext;
 
-import javaslang.*;
-import javaslang.collection.List;
+import io.vavr.*;
+import io.vavr.collection.List;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +36,7 @@ public class FunctionTest {
                 (integer, integer2, integer3) ->
                         integer + integer2 + integer3;
         Function1<Integer, Function1<Integer,
-                         Function1<Integer, Integer>>>
+                Function1<Integer, Integer>>>
                 curried =
                 function3.curried();
         Function1<Integer, Integer> add7 =
@@ -58,8 +57,8 @@ public class FunctionTest {
     @Test
     public void testTupledOfAFunction3() throws Exception {
         Function3<Integer, Integer, Integer, String> func3 =
-                (x,y,z) ->
-                x + y + z + "";
+                (x, y, z) ->
+                        x + y + z + "";
         Function1<Tuple3<Integer, Integer, Integer>, String>
                 tupled1 = func3.tupled();
         String result = tupled1.apply(
@@ -71,16 +70,19 @@ public class FunctionTest {
     @Test
     public void testMemoizationOfAFunction()
             throws Exception {
-        //In computing, memoization or memoisation is an optimization technique used primarily to speed up computer
-        // programs by storing the results of expensive function calls and returning the cached result when the same
+        // In computing, memoization is an optimization
+        // technique used primarily to speed up computer
+        // programs by storing the results of expensive function calls
+        // and returning the cached result when the same
         // inputs occur again.
-        Function1<Integer, Integer> f1 =  x -> {
+        Function1<Integer, Integer> f1 = x -> {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            };
-            return x + 1;};
+            }
+            return x + 1;
+        };
 
         Function1<Integer, Integer> f2 = f1.memoized();
 
@@ -103,7 +105,7 @@ public class FunctionTest {
 
     @Test
     public void functionComposition() throws Exception {
-        //From grade school we had the folling: f(g(x))
+        //From grade school we had the following: f(g(x))
         //
         //What does it mean?
         //    f(g(i))

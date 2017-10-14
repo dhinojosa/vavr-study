@@ -1,6 +1,6 @@
 package com.evolutionnext;
 
-import javaslang.concurrent.Future;
+import io.vavr.concurrent.Future;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;

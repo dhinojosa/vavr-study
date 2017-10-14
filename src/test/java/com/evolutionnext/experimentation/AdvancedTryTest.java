@@ -1,7 +1,7 @@
 package com.evolutionnext.experimentation;
 
-import javaslang.control.Option;
-import javaslang.control.Try;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.function.Function;
 
-import static javaslang.API.For;
+import static io.vavr.API.For;
 
 public class AdvancedTryTest {
 

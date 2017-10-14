@@ -1,11 +1,12 @@
 package com.evolutionnext;
 
-import javaslang.collection.List;
-import javaslang.control.Validation;
+
+import io.vavr.collection.Seq;
+import io.vavr.control.Validation;
 
 public class EmployeeValidator {
 
-    public Validation<List<String>, EmployeeWithVavr> validatePerson(
+    public Validation<Seq<String>, EmployeeWithVavr> validatePerson(
             String firstName,String lastName, int age) {
         return Validation.combine(
                 validateName(firstName),

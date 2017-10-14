@@ -1,7 +1,7 @@
 package com.evolutionnext;
 
-import javaslang.Tuple;
-import javaslang.collection.Stream;
+import io.vavr.Tuple;
+import io.vavr.collection.Stream;
 import org.junit.Test;
 
 public class StreamTest {

@@ -1,8 +1,8 @@
 package com.evolutionnext;
 
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.collection.List;
+
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,13 +15,5 @@ public class TuplesFunctionsTest {
         Tuple2<String, Integer> result = tuple2.map((i, j) ->
                 Tuple.of(i + "Bar", j + 4));
         assertThat(result).isEqualTo(Tuple.of("FooBar", 8));
-    }
-
-    @Test
-    public void testTupleTransform() throws Exception {
-        Tuple2<String, Integer> tuple2 = new Tuple2<>("Foo", 4);
-        List<Integer> transformation = tuple2.transform((s, integer) ->
-                  List.of(s.length(), integer * 2));
-        assertThat(transformation).isEqualTo(List.of(3, 8));
     }
 }

@@ -1,6 +1,6 @@
 package com.evolutionnext;
 
-import javaslang.collection.Vector;
+import io.vavr.collection.Vector;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

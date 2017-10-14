@@ -1,7 +1,7 @@
 package com.evolutionnext;
 
-import javaslang.collection.SortedSet;
-import javaslang.collection.TreeSet;
+import io.vavr.collection.SortedSet;
+import io.vavr.collection.TreeSet;
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

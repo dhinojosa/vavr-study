@@ -1,6 +1,6 @@
 package com.evolutionnext;
 
-import javaslang.control.Either;
+import io.vavr.control.Either;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

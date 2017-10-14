@@ -1,6 +1,7 @@
 package com.evolutionnext;
 
-import javaslang.control.Option;
+
+import io.vavr.control.Option;
 
 import java.util.Objects;
 

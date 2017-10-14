@@ -1,22 +1,21 @@
 package com.evolutionnext;
 
-import javaslang.Tuple2;
-import javaslang.concurrent.Future;
-import javaslang.control.Option;
-import javaslang.control.Try;
+import io.vavr.Tuple2;
+import io.vavr.concurrent.Future;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static javaslang.API.*;
-import static javaslang.Patterns.*;
-import static javaslang.Predicates.instanceOf;
-import static javaslang.Predicates.is;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static io.vavr.API.*;
+import static io.vavr.Predicates.*;
+import static io.vavr.Patterns.*;
 
 public class PatternMatchingTest {
-
     /*
      *  A switch works with the byte, short, char, and
      *  int primitive data types.
@@ -50,10 +49,10 @@ public class PatternMatchingTest {
     public void testSimplePatternMatch() throws Exception {
         String month = "January";
         Integer result = Match(month).of(
-                Case(is("January"), 1),
-                Case(is("February"), 2),
-                Case(is("March"), 3),
-                Case(is("April"), 4),
+                Case($(is("January")), 1),
+                Case($(is("February")), 2),
+                Case($(is("March")), 3),
+                Case($(is("April")), 4),
                 Case($(), 5));
         assertThat(result).isEqualTo(1);
     }
@@ -62,8 +61,8 @@ public class PatternMatchingTest {
     public void testPatternMatchOption() throws Exception {
         Option<String> middleName = Option.of("Lisa");
         String message = Match(middleName).of(
-                Case(Some($()), x -> "Middle name is " + x),
-                Case(None(), "No middle name here"));
+                Case($Some($()), x -> "Middle name is " + x),
+                Case($None(), "No middle name here"));
         assertThat(message).isEqualTo("Middle name is Lisa");
     }
 
@@ -73,8 +72,8 @@ public class PatternMatchingTest {
             throw new RuntimeException("Oops");
         });
         String message = Match(tryT2).of(
-                Case(Success($()), x -> "Got an answer and it was: " + x),
-                Case(Failure($()), x -> "Oh no we got: " + x.getMessage())
+                Case($Success($()), x -> "Got an answer and it was: " + x),
+                Case($Failure($()), x -> "Oh no we got: " + x.getMessage())
         );
         assertThat(message).isEqualTo("Oh no we got: Oops");
     }
@@ -89,9 +88,10 @@ public class PatternMatchingTest {
 
         future.onComplete(response ->
                 Match(response).of(
-                        Case(Success($(instanceOf(Integer.class))), integer -> run(() -> System.out.println(integer))),
-                        //TODO: Case(Success($())), integer -> run)
-                        Case(Failure($()), error -> run(error::printStackTrace))
+                        Case($Success($(instanceOf(Integer.class))),
+                                integer -> run(() ->
+                                        System.out.println(integer))),
+                        Case($Failure($()), error -> run(error::printStackTrace))
                 ));
         Thread.sleep(6000);
     }

@@ -1,7 +1,7 @@
 package com.evolutionnext;
 
-import javaslang.Lazy;
-import javaslang.collection.List;
+import io.vavr.Lazy;
+import io.vavr.collection.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

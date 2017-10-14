@@ -1,10 +1,10 @@
 package com.evolutionnext;
 
-import javaslang.CheckedFunction2;
-import javaslang.CheckedFunction3;
-import javaslang.test.Arbitrary;
-import javaslang.test.Gen;
-import javaslang.test.Property;
+import io.vavr.CheckedFunction2;
+import io.vavr.CheckedFunction3;
+import io.vavr.test.Arbitrary;
+import io.vavr.test.Gen;
+import io.vavr.test.Property;
 import org.junit.Test;
 
 public class PropertyTest {

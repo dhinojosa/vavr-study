@@ -1,6 +1,5 @@
 package com.evolutionnext;
 
-import javaslang.control.Option;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -13,15 +12,18 @@ public class EmployeeNoVavr {
 
     public EmployeeNoVavr(String firstName,
                           String lastName, int age) {
-        System.out.format("firstName: %s, lastName: %s, age: %d", firstName, lastName, age);
+        System.out.format("firstName: %s, lastName: %s, age: %d",
+                firstName, lastName, age);
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = null;
         this.age = age;
     }
 
-    public EmployeeNoVavr(String firstName, String middleName, String lastName, int age) {
-        System.out.format("firstName: %s, lastName: %s, age: %d", firstName, lastName, age);
+    public EmployeeNoVavr(String firstName, String middleName,
+                          String lastName, int age) {
+        System.out.format("firstName: %s, lastName: %s, age: %d",
+                firstName, lastName, age);
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -70,6 +72,6 @@ public class EmployeeNoVavr {
 
     public String getFullName() {
         return firstName + " " +
-                getMiddleName().map(x -> x + " ").orElse("")  + lastName;
+                getMiddleName().map(x -> x + " ").orElse("") + lastName;
     }
 }
