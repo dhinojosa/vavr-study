@@ -1,6 +1,8 @@
 package com.evolutionnext;
 
 
+import io.vavr.CheckedFunction0;
+import io.vavr.CheckedFunction1;
 import io.vavr.Function1;
 import io.vavr.concurrent.Future;
 import io.vavr.control.Try;
@@ -42,7 +44,8 @@ public class TryTest {
 
     @Test
     public void testTryWithThreadCleaner() {
-        Function1<Integer, Try<Integer>> fun = x -> Try.of(() -> {
+        Function1<Integer, Try<Integer>> fun =
+                x -> Try.of(() -> {
             Thread.sleep(5000);
             return x + 1000;
         });
@@ -58,17 +61,12 @@ public class TryTest {
         ExecutorService executorService =
                 Executors.newFixedThreadPool(4);
         Future<Integer> future = Future.of(executorService,
-                () -> {
+                 () -> {
                     Thread.sleep(5000);
                     return 50 + 10;
                 });
-        future.onComplete(new Consumer<Try<Integer>>() {
-            @Override
-            public void accept(Try<Integer> t) {
-                assertThat
-                        (t.getOrElse(-1)).isEqualTo(60);
-            }
-        });
+        future.onComplete((Try<Integer> t) -> assertThat
+                (t.getOrElse(-1)).isEqualTo(60));
         Thread.sleep(6000);
     }
 }

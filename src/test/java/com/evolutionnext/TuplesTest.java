@@ -3,6 +3,8 @@ package com.evolutionnext;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.Tuple3;
+import io.vavr.collection.List;
+import io.vavr.collection.Map;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,5 +33,15 @@ public class TuplesTest {
         assertThat(tuple3._1).isEqualTo("Foo");
         assertThat(tuple3._2).isEqualTo(30);
         assertThat(tuple3._3).isEqualTo(303.00);
+    }
+
+    @Test
+    public void ZipMaybe() throws Exception {
+        List<Integer> integers = List.of(1, 2, 3, 4);
+        List<Character> chars = List.of('a', 'b', 'c');
+        List<Tuple2<Integer, Character>> zip =
+                integers.zip(chars);
+
+        System.out.println(zip);
     }
 }

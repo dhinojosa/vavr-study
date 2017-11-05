@@ -1,5 +1,6 @@
 package com.evolutionnext;
 
+import io.vavr.CheckedFunction0;
 import io.vavr.concurrent.Future;
 import org.junit.Test;
 
@@ -83,7 +84,7 @@ public class FuturesTest {
                     return 50 + 10;
                 });
 
-        assertThat(future.map(x -> x + 100).get())
+        assertThat(future.map(x -> x + 100).get()) //block
                 .isEqualTo(160);
     }
 
@@ -98,18 +99,17 @@ public class FuturesTest {
                     return 50 + 10;
                 });
         future.onSuccess(x -> {
+            System.out.println("In Success Block");
             System.out.println(Thread.currentThread().getName());
             assertThat(x).isEqualTo(60);
         });
         future.onFailure(t -> {
+            System.out.println("In Failure Block");
             System.out.println(Thread.currentThread().getName());
             fail(t.getMessage());
         });
 
-        System.out.println("Well, hello there, Seattle");
-
-
-
+        System.out.println("Proved Asynchronous");
         Thread.sleep(6000);
     }
 }

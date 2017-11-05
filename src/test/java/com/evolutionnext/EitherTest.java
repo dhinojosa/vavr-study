@@ -1,5 +1,6 @@
 package com.evolutionnext;
 
+import io.vavr.Tuple2;
 import io.vavr.control.Either;
 import org.junit.Test;
 

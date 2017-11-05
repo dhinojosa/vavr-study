@@ -13,8 +13,14 @@ public class FunctionTest {
     @Test
     public void function0Test() throws Exception {
         //Aka Supplier
-        Function0<LocalDateTime> function0 =
-                LocalDateTime::now;
+        Function0<LocalDateTime> function0 = () -> {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return LocalDateTime.now();
+                };
         List<LocalDateTime> listOfLocalDates =
                 List.fill(10, function0);
         listOfLocalDates.forEach(System.out::println);
@@ -27,12 +33,17 @@ public class FunctionTest {
         List list = List.range(1, 10)
                         .map(integer -> integer + 1);
         assertThat(list.head()).isEqualTo(2);
-        assertThat(list.tail()).isEqualTo(List.of(3, 4, 5, 6, 7, 8, 9, 10));
+        assertThat(list.tail()).isEqualTo(
+                List.of(3, 4, 5, 6, 7, 8, 9, 10));
+        assertThat(list.init()).isEqualTo(
+                List.of(2, 3, 4, 5, 6, 7, 8, 9));
+        assertThat(list.last()).isEqualTo(10);
     }
 
     @Test
     public void curryingTest() throws Exception {
-        Function3<Integer, Integer, Integer, Integer> function3 =
+        Function3<Integer, Integer, Integer, Integer>
+                function3 =
                 (integer, integer2, integer3) ->
                         integer + integer2 + integer3;
         Function1<Integer, Function1<Integer,
@@ -108,7 +119,7 @@ public class FunctionTest {
         //From grade school we had the following: f(g(x))
         //
         //What does it mean?
-        //    f(g(i))
+        //    f(g(i)) = d
         //    g(i) = s
         //    f(s) = d
         Function1<String, Double> f =

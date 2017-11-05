@@ -42,8 +42,8 @@ public class ForComprehensionTest {
 
         Either<String, Integer> result =
                 For(positiveAnswer, x ->
-                        For(positiveAnswer2)
-                                .yield(y -> x + y))
+                For(positiveAnswer2)
+                        .yield(y -> x + y))
                         .toRight("Nope");
 
         assertThat(result).isEqualTo(Either.right(20));
@@ -66,7 +66,7 @@ public class ForComprehensionTest {
 
         Option<Integer> result =
                 For(option1, o1 ->
-                        For(option2)
+                For(option2)
                                 .yield(o2 -> o1 + o2))
                                 .toOption();
         assertThat(result).isEqualTo(Option.none());
@@ -101,11 +101,11 @@ public class ForComprehensionTest {
     @Test
     public void testForComprehensionOneTryOneBadOption() {
         Try<Integer> try1 = Try.of(() -> 12);
-        Option<Integer> try2 = Option.none();
+        Option<Integer> badOption = Option.none();
 
         Option<Integer> option =
                 For(try1, a ->
-                        For(try2).yield(b -> a + b)
+                        For(badOption).yield(b -> a + b)
                 ).toOption();
 
         assertThat(option).isEqualTo(Option.none());

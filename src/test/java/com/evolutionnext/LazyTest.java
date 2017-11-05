@@ -17,17 +17,18 @@ public class LazyTest {
         Lazy<LocalDateTime> lazyLocalDateTime =
                 Lazy.of(LocalDateTime::now);
 
-        System.out.println("At the time of this line evaluation: "
+        System.out.println("1. At the time of " +
+                "this line evaluation: " //smallest
                 + LocalDateTime.now());
 
         Thread.sleep(1000);
 
-        System.out.println("What we got from our lazy value: "
-                + lazyLocalDateTime.get());
+        System.out.println("2. What we got from our lazy value: "
+                + lazyLocalDateTime.get()); //larger
 
         Thread.sleep(1000);
 
-        System.out.println("What we got from our lazy value: "
+        System.out.println("3. What we got from our lazy value: "
                 + lazyLocalDateTime.get()); //memoized
 
         Thread.sleep(1000);
@@ -56,7 +57,7 @@ public class LazyTest {
         System.out.println("So far so good");
         Thread.sleep(1000);
 
-        integerLazy.forEach(System.out::println);
+        integerLazy.forEach(System.out::println); //Sheer disaster
     }
 
     @Test

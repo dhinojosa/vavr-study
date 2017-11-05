@@ -20,10 +20,17 @@ public class OptionTest {
 
     @Test
     public void testOptionSerialization() throws Exception {
-        EmployeeWithVavr emp = new EmployeeWithVavr("Harry", "S", "Truman", 60);
-        EmployeeWithVavr emp2 = new EmployeeWithVavr("Daniel", "Hinojosa", 22);
-        assertThat(emp.getMiddleName().getOrElse("No Middle Name")).isEqualTo("S");
-        assertThat(emp2.getMiddleName().getOrElse("No Middle Name")).isEqualTo("No Middle Name");
+        EmployeeWithVavr emp = new EmployeeWithVavr
+                ("Harry", "S",
+                        "Truman", 60);
+        EmployeeWithVavr emp2 = new EmployeeWithVavr
+                ("Daniel", "Hinojosa", 22);
+        assertThat(emp.getMiddleName()
+                      .getOrElse("No Middle Name"))
+                .isEqualTo("S");
+        assertThat(emp2.getMiddleName()
+                       .getOrElse("No Middle Name"))
+                .isEqualTo("No Middle Name");
     }
 
     @Test
