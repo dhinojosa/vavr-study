@@ -1,21 +1,22 @@
-#Java Slang Study
+# Vavr Study
 
-This is a study project for the Java Slang Presentation done by Daniel Hinojosa. 
+This is a study project for the Vavr (formerly called: Javaslang) Presentation done by Daniel Hinojosa. 
 This repository contains code examples that are compilable and testable.
 
-Most if not all exercises are done as a JUnit Test.  This 
+Most if not all exercises are done as a JUnit Test. This 
 provides a fast, clean, and focused way to determine if the 
 code actually works and so you can easily see the results.
 
-##Java Slang Introduction
+## Vavr Introduction
 
-Java Slang is a library created by Daniel Dietrich, and Robert Winkler. 
+Vavr is a library created by Daniel Dietrich. 
 This library builds a tighter bond between Java 8 and extra functional
 programming ideas like Functional Data Structures, extra Functional Declarations,
 Tuples, and other functional constructs like `Try`, a better functional `Option`, 
 `Lazy` evaluation, `Either` evaluation, better `Future` handling, and `Validation`.
  
-##Referential Transparency
+## Referential Transparency
+
 A term often used in pure functional languages, where according to 
 the Haskell language wiki (1) it is defined as n expression always evaluates to 
 the same result in any context. That is when we invoke code that 
@@ -23,7 +24,7 @@ performs any work, that we get the same information back
 any time that we invoke it. Consider the following example in a 
 fake generic language, that I have concocted:
 
-```$generic 
+```groovy
 def add(x, y) {
    return x + y
 }
@@ -60,13 +61,12 @@ longer have to query what state a
 certain object or instance is in, neither do your processors have to query 
 as well since they all maintain the same copy.
 
-JavaSlang meets this immutable functional data structures, 
+Vavr meets this immutable functional data structures, 
 also known as _purely functional data structures_.
 
 ## Purely Functional Data Structures
 
-Now that you know what these purely functional data structures are, lets start with 
-the single linked list
+Now that you know what these purely functional data structures are, lets start with the single linked list
 
 ### Single Linked List
 
@@ -75,24 +75,24 @@ another via a reference.
 
 #### The Power of `prepend`
 
-In functional programming, the power of an operation lies in prepend, and that is to 
-add one element to the beginning of a `List`. Consider the following diagram.
+In functional programming, the power of an operation lies in prepend, and that is to add one element to the beginning of a `List`. Consider the following diagram.
 
 First let's take a look at the code:
 
-```$javaslang
+```java
 List<Integer> original = List.of(1, 2, 3);
 List<Integer> result = singleLinkedList.prepend(0);
 ```
 
-Here is what `prepend` actually does in the source code inside of JavaSlang:
+Here is what `prepend` actually does in the source code inside of Vavr:
 
-```$java
+```java
 default List<T> prepend(T element) {
     //this refers to the List that this method is in
     return new List.Cons(element, this); 
 }
 ```
+
 That means that the diagram for this operation looks as follows:
 
 ```
@@ -103,17 +103,18 @@ result   -> [0]
 ```
 
 There really isn't that much copying going on here so therefore the operation.
-Where things get interesting is when we `append` rather than `prepend`. There of course will be cost, 
-but let's take a look at how this is done using the Java Slang API, then take 
-a look at the internals and see how it all works.
+Where things get interesting is when we `append` rather than `prepend`. There of course will be cost, but let's take a look at how this is done using the Vavr API then take a look at the internals and see how it all works.
 
 First, how it is simply done.
-```$java
+
+```java
 List<Integer> original = List.of(1, 2, 3);
 List<Integer> result = original.append(4);
 ```
+
 What is really going on inside.
-```$java
+
+```java
 default List<T> append(T element) {
    return (List)this.foldRight(of(element), (x, xs) -> {
        return xs.prepend(x);
@@ -126,7 +127,7 @@ that we want to add, in our case `4`, and we build atop of that
 one item linearly until we have our new list, but we are going _right_ so
 in our example we will start with 3 and go right.
 
-```$java
+```java
 Iteration 1:  x = 3 ; xs = [4]       ; result = [3, 4]
 Iteration 2:  x = 2 ; xs = [3, 4]    ; result = [2, 3, 4]
 Iteration 3:  x = 1 ; xs = [2, 3, 4] ; result = [1, 2, 3, 4]
@@ -135,7 +136,7 @@ Iteration 3:  x = 1 ; xs = [2, 3, 4] ; result = [1, 2, 3, 4]
 If you really want to look at it as a test, 
  you can rewrite `append` for very own, only in this example, I am explicitly using `BiFunction` to show our lambda conversion.
 
-```$java
+```java
 List<Integer> original = List.of(1, 2, 3);
 List<Integer> foldRight = original.foldRight(List.of(4), new BiFunction<Integer, List<Integer>, List<Integer>>() {
     @Override
@@ -190,25 +191,17 @@ while the `rear` is not. The new `Queue` will move the `rear` to the `front` and
             
 ## Performance Concerns
 
-While performance concerns are always valid when immutable collections are concerned, the JavaSlang
- website contains a table of all O-notation expectations for different behaviors
-  on different collections
+While performance concerns are always valid when immutable collections are concerned, the Vavr website contains a table of all O-notation expectations for different behaviors on different collections
 
-
-http://www.javaslang.io/javaslang-docs/#_performance_characteristics
-
+http://www.vavr.io/vavr-docs/#_performance_characteristics
 
 ## Options
 
-`Option` has been in the JDK for a while now in the form of `java.util.Optional<T>` and
-while somewhat useful there is one important aspect about `Optional` and that is that it
-isn't serializable.  That in turn also means that it is not meant to be used as member 
- variables.  Java Slang's `Option` is serializable, and there was a time where there was some 
- contemplation of removing it.
+`Option` has been in the JDK for a while now in the form of `java.util.Optional<T>` and while somewhat useful there is one important aspect about `Optional` and that is that it isn't serializable. That in turn also means that it is not meant to be used as member variables. Vavr's `Option` is serializable, and there was a time where there was some contemplation of removing it.
  
- Here is a simple example of what is available with JavaSlang's variety of `Option`.
+ Here is a simple example of what is available with Vavr's variety of `Option`.
  
-```$java
+```java
 Option<String> option1 = Option.none();
 Option<String> option2 = Option.of("Foo");
 
@@ -217,23 +210,18 @@ option2.getOrElse("Nope, Sorry");  //Foo
 ```
 
 ## Tuples
-If you, our dearly beloved reader has never ventured past the lush lawns of Java,
- you may have not seen tuples. Tuple are immutable container for disparate objects. If you 
- ever wondered how you can return two items from a method, that would be a `Tuple`. In JavaSlang,
- there is `Tuple1`, `Tuple2`, `Tuple3`, `Tuple4`, `Tuple5`,  all the way to `Tuple8`. 
+If you, our dearly beloved reader has never ventured past the lush lawns of Java, you may have not seen tuples. Tuple are immutable container for disparate objects. If you ever wondered how you can return two items from a method, that would be a `Tuple`. In Vavr, there is `Tuple1`, `Tuple2`, `Tuple3`, `Tuple4`, `Tuple5`, all the way to `Tuple8`. 
   
-```$java
+```java
 Tuple2<String, Integer> tuple2 = new Tuple2<>("Foo", 4);
 tuple2._1()  // Foo
 tuple2._2()  // 4
 ```
 
 From the last example, if you might be wondering where did that `_1` and `_2` come from? 
-Being that JavaSlang is inspired from Scala and Scala ultimately being inspired from Haskell,
-this where the notion of first and second come into play.  Where are tuples used? Let's take a look 
-at an immutable map.
+Being that Vavr is inspired from Scala and Scala ultimately being inspired from Haskell, this where the notion of first and second come into play.  Where are tuples used? Let's take a look at an immutable map.
 
-```$java
+```java
 Map<Integer, String> nums = HashMap.of(
                 Tuple.of(1, "One"), 
                 Tuple.of(2, "Two"), 
@@ -257,10 +245,9 @@ public interface BiFunction<T, U, R> {
 ```
 
 Just because `BiFunction` has `@FunctionalInterface` doesn't make it a function. 
-That is purely a call to the compiler to help us ensure that this indeed
-is an `interface` with one `abstract` method.
+That is purely a call to the compiler to help us ensure that this indeed is an `interface` with one `abstract` method.
 
-Let's take a look though at what the JavaSlang alternative for `BiFunction` looks like.
+Let's take a look though at what the Vavr alternative for `BiFunction` looks like.
 
 ```$java
 @FunctionalInterface
@@ -270,17 +257,9 @@ public interface Function2<T1, T2, R> extends λ<R>, BiFunction<T1, T2, R>  {
 ```
 
 Interesting find. `Function2` derives from `java.util.BiFunction`. Great! 
-So anywhere something accepts a `BiFunction` you can fit a nice `Function2`.  It also extends 
-from `λ` and you know what that means, so let's move on.  I am just kidding you don't 
-know what `λ` does, what the hell is that thing? `λ` is a super interface!  The super `interface`
-merely dictates that is you want to roll with `λ` gang, 
-you need to be able to turn into a `curried` function, back to an uncurried function
-called `tupled`, and you should be able to `memoize` a function which is to cache a set of
-inputs. All part of the plan.
+So anywhere something accepts a `BiFunction` you can fit a nice `Function2`.  It also extends from `λ` and you know what that means, so let's move on.  I am just kidding you don't know what `λ` does, what the hell is that thing? `λ` is a super interface!  The super `interface` merely dictates that is you want to roll with `λ` gang, you need to be able to turn into a `curried` function, back to an uncurried function called `tupled`, and you should be able to `memoize` a function which is to cache a set of inputs. All part of the plan.
 
-Before we begin to see all the goodness of a `Fuction` just note that just like `Tuple`, 
-function come in these wide array of flavors, `Function1`, `Function2`, `Function3`, `Function4`, 
-all the way to `Function8`. Now spring into action with JavaSlang's functions.
+Before we begin to see all the goodness of a `Fuction` just note that just like `Tuple`, function come in these wide array of flavors, `Function1`, `Function2`, `Function3`, `Function4`, all the way to `Function8`. Now spring into action with Vavr's functions.
 
 ```java
 Function0<LocalDate> function0 = new Function0<LocalDate>() {
@@ -306,7 +285,7 @@ List<LocalDate> listOfLocalDates = List.fill(10, function0);
 listOfLocalDates.forEach(System.out::println);
 ```
 
-Running the above lists 10 dates using `List.fill` a method on JavaSlang's `List`. Pretty nifty.
+Running the above lists 10 dates using `List.fill` a method on Vavr's `List`. Pretty nifty.
 
 ## Pattern Matching
 
@@ -382,9 +361,10 @@ whatever is in the `Some`, you see after that, that we
 have a function so we can actually match on the middle name.
 
 ## Conclusion
-There is way much more goodness with JavaSlang.  Check out the 
+
+There is way much more goodness with Vavr. Check out the 
 project, or attend one of my sessions where we can discover 
-some more of the exciting aspects of JavaSlang.  Once you delight
+some more of the exciting aspects of Vavr. Once you delight
 in some of these new features you'll either want to skip over
 to another functional language like Scala or Clojure or you'll 
-just want to demand more out of Java.  
+just want to demand more out of Java.
